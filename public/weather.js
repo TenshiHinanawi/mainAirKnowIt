@@ -1,31 +1,46 @@
-document.getElementById('theme-toggle').addEventListener('click', function () {
-    const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    window.location.href = `/set-theme/${newTheme}`;
-});
-
-Chart.defaults.color = '#4CAF50';
+// Create Temperature Chart
 const ctxLine = document.getElementById('temp').getContext('2d');
 const lineChart = new Chart(ctxLine, {
     type: 'line',
     data: {
         labels: labels,
-        datasets: [{
-            label: 'Temperature (°C)',
-            data: temperatures,
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            fill: false,
-            tension: 0.1
-        },
-        {
-            label: 'Feels Like (°C)',
-            data: feelsLike,
-            borderColor: 'rgb(255, 200, 132)',
-            backgroundColor: 'rgba(255, 200, 132, 0.2)',
-            fill: false,
-            tension: 0.1
-        }
+        datasets: [
+            {
+                label: 'Temperature (°C)',
+                data: temperatures,
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                fill: false,
+                tension: 0.1,
+                borderWidth: 1
+            },
+            {
+                label: 'Feels Like (°C)',
+                data: feelsLike,
+                borderColor: 'rgb(255, 159, 64)',
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                fill: false,
+                tension: 0.1,
+                borderWidth: 1
+            },
+            {
+                label: 'Min (°C)',
+                data: tempmin,
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: false,
+                tension: 0.1,
+                borderWidth: 1
+            },
+            {
+                label: 'Max (°C)',
+                data: tempmax,
+                borderColor: 'rgb(153, 102, 255)',
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                fill: false,
+                tension: 0.1,
+                borderWidth: 1
+            }
         ]
     },
     options: {
@@ -56,6 +71,7 @@ const lineChart = new Chart(ctxLine, {
     }
 });
 
+// Create Humidity Chart
 const ctxBar = document.getElementById('humidity').getContext('2d');
 const barChart = new Chart(ctxBar, {
     type: 'line',
@@ -97,6 +113,7 @@ const barChart = new Chart(ctxBar, {
     }
 });
 
+// Create Wind Speed & Gust Chart
 const ctxBar1 = document.getElementById('wind').getContext('2d');
 const wind = new Chart(ctxBar1, {
     type: 'line',
@@ -145,37 +162,12 @@ const wind = new Chart(ctxBar1, {
     }
 });
 
+// Display weather description
 const weatherElement = document.getElementById('weather-description');
-if (weather.length > 0) {
-    weatherElement.innerText = `Weather: ${weather[0]}`;
-    if (weather[0] == "scattered clouds") {
-        weatherElement.innerText = `Weather: Scattered Clouds`;
-    }
-    if (weather[0] == "few clouds") {
-        weatherElement.innerText = `Weather: Few Clouds`;
-    }
-    if (weather[0] == "broken clouds") {
-        weatherElement.innerText = `Weather: Broken Clouds`;
-    }
-    if (weather[0] == "clear sky") {
-        weatherElement.innerText = `Weather: Clear Sky`;
-    }
-    if (weather[0] == "shower rain") {
-        weatherElement.innerText = `Weather: Rain Shower`;
-    }
-    if (weather[0] == "rain") {
-        weatherElement.innerText = `Weather: Rain`;
-    }
-    if (weather[0] == "thunderstorm") {
-        weatherElement.innerText = `Weather: Thunderstorm`;
-    }
-    if (weather[0] == "snow") {
-        weatherElement.innerText = `Weather: Snow`;
-    }
-    if (weather[0] == "mist") {
-        weatherElement.innerText = `Weather: Mist`;
-    }
+if (weather && weather.length > 0) {
+    let weatherCondition = weather[0];  // Get the first weather description
+    // Display weather condition
+    weatherElement.innerText = `Weather: ${weatherCondition.charAt(0).toUpperCase() + weatherCondition.slice(1)}`;
 } else {
     weatherElement.innerText = 'Weather data not available';
 }
-

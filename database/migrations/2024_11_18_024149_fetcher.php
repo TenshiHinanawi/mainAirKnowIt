@@ -6,38 +6,54 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        // Create the 'weather_data' table first
-        Schema::create('fetched_weather_data', function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->string('location');
             $table->string('country');
+            $table->timestamps();
+            $table->unique(['location', 'country']);
+        });
+
+        Schema::create('weather_conditions', function (Blueprint $table) {
+            $table->foreignId('location_id')
+                ->constrained('locations')
+                ->onDelete('cascade');
             $table->string('weather');
             $table->string('description');
+            $table->timestamps();
+        });
+
+        Schema::create('temperature_readings', function (Blueprint $table) {
+            $table->foreignId('location_id')
+                ->constrained('locations')
+                ->onDelete('cascade');
             $table->float('temperature');
             $table->float('feels_like');
             $table->float('temp_min');
             $table->float('temp_max');
-            $table->unsignedTinyInteger('humidity'); // Percentages 0–100
-            $table->float('pressure');
-            $table->unsignedBigInteger('visibility'); // Large values
-            $table->unsignedTinyInteger('cloudiness'); // Percentages 0–100
-            $table->float('wind_speed');
-            $table->float('wind_gust')->nullable();
-            $table->float('wind_direction')->nullable(); // Optional if data is unavailable
             $table->timestamps();
         });
 
-        // Create the 'air_quality_data' table after the 'weather_data' table
-        Schema::create('fetched_air_quality_data', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('weather_id')->constrained('fetched_weather_data')->onDelete('cascade');
-            $table->string('location');
-            $table->string('country');
+        Schema::create('atmospheric_conditions', function (Blueprint $table) {
+            $table->foreignId('location_id')
+                ->constrained('locations')
+                ->onDelete('cascade');
+            $table->unsignedTinyInteger('humidity');
+            $table->float('pressure');
+            $table->unsignedBigInteger('visibility');
+            $table->unsignedTinyInteger('cloudiness');
+            $table->float('wind_speed');
+            $table->float('wind_gust')->nullable();
+            $table->float('wind_direction')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('air_quality_data', function (Blueprint $table) {
+            $table->foreignId('location_id')
+                ->constrained('locations')
+                ->onDelete('cascade');
             $table->float('pm2_5');
             $table->float('pm10');
             $table->float('o3');
@@ -50,12 +66,15 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('fetched_air_quality_data');
-        Schema::dropIfExists('fetched_weather_data');
+        Schema::dropIfExists('air_quality_data');
+        Schema::dropIfExists('atmospheric_conditions');
+        Schema::dropIfExists('temperature_readings');
+        Schema::dropIfExists('weather_conditions');
+        Schema::dropIfExists('locations');
     }
+
 };
+
+

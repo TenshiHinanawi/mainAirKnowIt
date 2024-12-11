@@ -12,12 +12,12 @@ use App\Models\AirQualityData;
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        \App\Console\Commands\FetchWeatherData::class, // Add your custom command here
+        \App\Console\Commands\FetchWeatherData::class,
     ];
 
     protected function schedule(Schedule $schedule)
 {
-    // Run your weather fetch command every 10 minutes
+
     $schedule->command('fetch:data')->everyTenMinutes();
 }
 
@@ -27,6 +27,10 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
         require base_path('routes/console.php');
     }
+    protected $routeMiddleware = [
+
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+    ];
 }
 
 

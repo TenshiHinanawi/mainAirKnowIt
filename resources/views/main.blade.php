@@ -7,27 +7,26 @@
     <title>AirKnowIt</title>
     <link rel="stylesheet" href="{{ asset('weather.css') }}">
 </head>
-
 <body>
-
-    <!-- Main Content -->
     <div id="container">
-
-        <!-- Search Section -->
         <div class="card">
+            <form action="{{ route('fetch.weather') }}" method="POST">
+                @csrf
+                <label for="cities">Fetch Weather and Air Data:</label>
+                <input class="search-bar" type="text" id="cities" name="cities" placeholder="Ex: Manila, Taguig, Quezon">
+                <button class="mainblade-btn" type="submit">Fetch</button>
+            </form>
+            <br>
             <input class="search-bar" type="text" id="city-search" placeholder="Enter City Name">
             <button class="mainblade-btn" id="geolocation-btn">Use Geolocation</button>
             <button class="mainblade-btn" id="search-btn">Search City</button>
         </div>
-
-        <!-- Weather & Air Quality Section -->
         <div class="card">
             <h2>Weather & Air Quality for <span id="search-location">--</span></h2>
-            <p><span class="icon" id="weather-icon">--</span> <span id="weather">--</span></p>
+            <p><span class="icon" id="weather-icon">--</span> <span id="weather" style="text-transform: uppercase;"></span></p>
             <p><span class="icon">🌫️</span> Visibility: <span id="search-visibility">--</span> meters</p>
             <p><span class="icon">☁️</span> Cloudiness: <span id="search-cloudiness">--</span>%</p>
         </div>
-
         <!-- Temperature Details -->
         <div class="card">
             <h2>Temperature</h2>
@@ -93,7 +92,6 @@
             </div>
 
         </div>
-
         <!-- Wind Details -->
         <div class="card">
             <h2>Wind</h2>

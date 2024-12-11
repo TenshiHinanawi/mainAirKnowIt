@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Artisan;
+use App\Models\WeatherData;
+use App\Models\AirQualityData;
+
 
 class WeatherController extends Controller
 {
@@ -26,6 +30,16 @@ class WeatherController extends Controller
             'air_quality' => $airQualityData,
             'location' => $locationData,
         ]);
+    }
+
+    public function fetchData(Request $request)
+    {
+
+        $cities = $request->input('cities', null);
+        $citiesArgument = $cities ? $cities : null;
+        Artisan::call('fetch:data', ['cities' => $citiesArgument]);
+        Artisan::call('clean:cleanup');
+        return redirect()->route('dashboard')->with('success', 'Fetched and cleaned successfully');
     }
 
 }

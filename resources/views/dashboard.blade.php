@@ -8,18 +8,32 @@
                 </a>
             </h2>
             <div class="flex gap-4">
-                <a href="{{ url('/historical-weather') }}"
-                    class="text-base font-medium text-gray-800 dark:text-gray-200 hover:underline">
-                    Historical Weather Data
-                </a>
-                <a href="{{ url('/historical-air') }}"
-                    class="text-base font-medium text-gray-800 dark:text-gray-200 hover:underline">
-                    Historical Air Data
-                </a>
+                <div class="dropdown">
+                    <button class="dropdown-btn">Historical</button>
+                    <div class="dropdown-content">
+                        <a href="{{ url('/historical-weather') }}" class="{{ request('location') == 'Historical Weather' ? 'active' : '' }}">
+                            Historical Weather
+                        </a>
+                        <a href="{{ url('/historical-air') }}" class="{{ request('location') == 'Historical Air Quality' ? 'active' : '' }}">
+                            Historical Air Quality
+                        </a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-btn">Forecasts</button>
+                    <div class="dropdown-content">
+                        <a href="{{ url('/forecast') }}" class="{{ request('location') == 'Air Quality Forecast' ? 'active' : '' }}">
+                            Air Quality Forecast
+                        </a>
+                        <a href="{{ url('/forecast-temperature') }}" class="{{ request('location') == 'Temperature Forecast' ? 'active' : '' }}">
+                            Temperature Forecast
+                        </a>
+                    </div>
+                </div>
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button>
-                            <div class="font-bold">{{ Auth::user()->name }}</div>
+                            <div style="font-weight: bold;" class="font-bold">{{ Auth::user()->name }}</div>
                         </button>
                     </x-slot>
 
@@ -46,9 +60,6 @@
             </div>
         </div>
     </x-slot>
-
-
-
-            @include('main')
+    @include('main')
 
 </x-app-layout>

@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\WeatherData;
+use App\Models\AirQualityData;
 
 class Cleanup extends Command
 {
@@ -12,14 +12,14 @@ class Cleanup extends Command
      *
      * @var string
      */
-    protected $signature = 'test:cleanup';
+    protected $signature = 'clean:cleanup';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Test cleanup for weather data older than 3 hours.';
+    protected $description = 'Test cleanup for weather data older than 7 days.';
 
     /**
      * Execute the console command.
@@ -29,16 +29,16 @@ class Cleanup extends Command
     public function handle()
     {
         // Log cleanup process start
-        $this->info('Starting cleanup for weather data older than 3 hours.');
+        $this->info('Starting cleanup for weather data older than 7 days.');
 
         // Delete weather data older than 3 hours using 'created_at' field (or 'recorded_at' if you changed it)
-        $deletedWeatherData = WeatherData::where('created_at', '<', now()->subHours(3))->delete();
+        $deletedAirData = AirQualityData::where('created_at', '<', now()->subWeek())->delete();
 
         // Log the number of weather records deleted
-        if ($deletedWeatherData) {
-            $this->info("Deleted $deletedWeatherData weather records.");
+        if ($deletedAirData ) {
+            $this->info("Deleted $deletedAirData air quality records.");
         } else {
-            $this->info('No weather records older than 3 hours found for deletion.');
+            $this->info('No air quality records older than 7 days found for deletion.');
         }
 
         // Log cleanup completion

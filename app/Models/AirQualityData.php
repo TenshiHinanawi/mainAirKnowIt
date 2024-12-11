@@ -2,24 +2,25 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class AirQualityData extends Model
 {
+    use CrudTrait;
     use HasFactory;
 
-    // Specify the table name
-    protected $table = 'fetched_air_quality_data';
+    protected $table = 'air_quality_data';
 
-    // Define the fillable fields for mass assignment
     protected $fillable = [
-        'weather_id','location', 'country', 'pm2_5', 'pm10', 'o3', 'so2', 'no', 'no2', 'co', 'nh3'
+        'location_id', 'pm2_5', 'pm10', 'o3', 'so2', 'no', 'no2', 'co', 'nh3'
     ];
-
-    // Define the relationship with WeatherData
-    public function weatherData()
+    /**
+     * Relationship with the Location model.
+     */
+    public function location()
     {
-        return $this->belongsTo(WeatherData::class, 'weather_id');
+        return $this->belongsTo(Location::class); // Relating to the location model (one-to-many inverse)
     }
 }

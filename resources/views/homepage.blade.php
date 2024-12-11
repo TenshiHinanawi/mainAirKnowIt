@@ -11,11 +11,14 @@
 <body>
     <header>
         <h1>Welcome to AirKnowIt!</h1>
-        <p>Enhancing Environmental Awareness Through Real-Time Monitoring</p>
+        <p>Empowering You with Real-Time Air Quality Insights for a Healthier Tomorrow</p>
     </header>
 
     <div class="container">
+        @auth<h2>Hello, {{ Auth::user()->name }}</h2>
+        @else
         <h2>Get Started</h2>
+        @endauth
         <div class="auth-buttons">
             @if (Route::has('login'))
                 @auth

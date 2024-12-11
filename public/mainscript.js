@@ -74,8 +74,8 @@ window.onload = function () {
     function updateAirQualityInfo(data) {
         const components = data.list[0].components;
         const thresholds = {
-            pm2_5: [75, 50, 25, 10],
-            pm10: [200, 100, 50, 20],
+            pm2_5: [150.4, 55.4, 35.4, 12],
+            pm10: [354, 254, 154, 54],
             o3: [180, 140, 100, 60],
             so2: [350, 250, 80, 20],
             no: [150, 100, 50, 25],
